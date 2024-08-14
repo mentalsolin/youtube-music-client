@@ -1,7 +1,7 @@
 {
   "name": "your-app-name",
   "productName": "YouTube Music",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "main.js",
   "build": {
     "appId": "com.yourdomain.yourapp",

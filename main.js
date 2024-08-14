@@ -21,6 +21,11 @@ function createWindow() {
   Menu.setApplicationMenu(null);
 
   updateThumbarButtons(false);
+
+  mainWindow.on("close", (event) => {
+    mainWindow.webContents.send("media-play-pause");
+    app.quit()
+  });
 }
 
 function updateThumbarButtons(isTrackSelected) {
@@ -73,12 +78,6 @@ ipcMain.on("update-play-pause", (event, playing) => {
 });
 
 app.on("ready", createWindow);
-
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
 
 app.on("activate", () => {
   if (mainWindow === null) {
