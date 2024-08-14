@@ -1,0 +1,25 @@
+{
+  "name": "your-app-name",
+  "productName": "YouTube Music",
+  "version": "0.0.1",
+  "main": "main.js",
+  "build": {
+    "appId": "com.yourdomain.yourapp",
+    "win": {
+      "icon": "build/icon.ico"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "icons/*"
+    ]
+  },
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^31.3.1",
+    "electron-builder": "^24.13.3"
+  }
+}
