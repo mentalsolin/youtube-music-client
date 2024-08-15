@@ -29,6 +29,7 @@ function createWindow() {
 }
 
 function updateThumbarButtons(isTrackSelected) {
+  const radioIconPath = path.join(__dirname, "icons", "radio.png");
   const playPauseIconPath = path.join(
     __dirname,
     "icons",
@@ -41,13 +42,22 @@ function updateThumbarButtons(isTrackSelected) {
     "icons",
     isLiked ? "like.png" : "like-fill.png"
   );
-
+  
+  const radioIcon = nativeImage.createFromPath(radioIconPath);
   const playPauseIcon = nativeImage.createFromPath(playPauseIconPath);
   const prevIcon = nativeImage.createFromPath(prevIconPath);
   const nextIcon = nativeImage.createFromPath(nextIconPath);
   const likeIcon = nativeImage.createFromPath(likeIconPath);
 
   mainWindow.setThumbarButtons([
+    {
+      tooltip: "Start radio",
+      icon: radioIcon,
+      click() {
+        mainWindow.webContents.send("media-radio-track");
+      },
+      flags: isTrackSelected ? [] : ["disabled"],
+    },
     {
       tooltip: "Previous",
       icon: prevIcon,
