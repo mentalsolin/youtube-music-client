@@ -3,6 +3,7 @@ const path = require("path");
 
 let mainWindow;
 let isPlaying = false;
+let isLiked = true;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -17,14 +18,14 @@ function createWindow() {
   });
 
   mainWindow.loadURL("https://music.youtube.com/");
-
+  mainWindow.webContents.openDevTools();
   Menu.setApplicationMenu(null);
 
   updateThumbarButtons(false);
 
   mainWindow.on("close", (event) => {
     mainWindow.webContents.send("media-play-pause");
-    app.quit()
+    app.quit();
   });
 }
 
@@ -36,10 +37,16 @@ function updateThumbarButtons(isTrackSelected) {
   );
   const prevIconPath = path.join(__dirname, "icons", "prev.png");
   const nextIconPath = path.join(__dirname, "icons", "next.png");
+  const likeIconPath = path.join(
+    __dirname,
+    "icons",
+    isLiked ? "like.png" : "like-fill.png"
+  );
 
   const playPauseIcon = nativeImage.createFromPath(playPauseIconPath);
   const prevIcon = nativeImage.createFromPath(prevIconPath);
   const nextIcon = nativeImage.createFromPath(nextIconPath);
+  const likeIcon = nativeImage.createFromPath(likeIconPath);
 
   mainWindow.setThumbarButtons([
     {
@@ -65,6 +72,13 @@ function updateThumbarButtons(isTrackSelected) {
       },
       flags: isTrackSelected ? [] : ["disabled"],
     },
+    {
+      tooltip: isLiked ? "Like" : "Unlike",
+      icon: likeIcon,
+      click() {
+        mainWindow.webContents.send("like-track");
+      },
+    },
   ]);
 }
 
@@ -74,6 +88,11 @@ ipcMain.on("update-thumbar-buttons", (event, { isTrackSelected }) => {
 
 ipcMain.on("update-play-pause", (event, playing) => {
   isPlaying = playing;
+  updateThumbarButtons(true);
+});
+
+ipcMain.on("update-like-button", (event, liked) => {
+  isLiked = liked;
   updateThumbarButtons(true);
 });
 
