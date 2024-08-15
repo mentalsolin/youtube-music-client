@@ -9,4 +9,4 @@
 
 ## Bugs
 
-- [ ] Add appdata folder
+- [x] Add appdata folder
