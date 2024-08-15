@@ -6,7 +6,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function checkLike() {
-    const likeButton = document.querySelector('.middle-controls-buttons .like');
+    const likeButton = document.querySelector(".middle-controls-buttons .like");
     return likeButton && likeButton.getAttribute("aria-pressed") == "true";
   }
 
@@ -47,7 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
     subtree: true,
   });
 
-  const likeButton = document.querySelector('.middle-controls-buttons .like');
+  const likeButton = document.querySelector(".middle-controls-buttons .like");
 
   const observer2 = new MutationObserver(() => {
     const isLiked = checkLike();
@@ -60,7 +60,9 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   ipcRenderer.on("like-track", () => {
-    const likeButtonElement = document.querySelector('.middle-controls-buttons .like button');
+    const likeButtonElement = document.querySelector(
+      ".middle-controls-buttons .like button"
+    );
     if (likeButtonElement) {
       const isLiked = checkLike();
       likeButtonElement.click();
@@ -81,5 +83,14 @@ window.addEventListener("DOMContentLoaded", () => {
     if (previousButton && !previousButton.disabled) {
       previousButton.click();
     }
+  });
+
+  ipcRenderer.on("media-radio-track", () => {
+    document.querySelector(".middle-controls-buttons #button-shape").click();
+    document.querySelector(".middle-controls-buttons #button-shape").click();
+
+    setTimeout(() => {
+      document.getElementById("navigation-endpoint").click();
+    }, 500);
   });
 });
