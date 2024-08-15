@@ -18,7 +18,6 @@ function createWindow() {
   });
 
   mainWindow.loadURL("https://music.youtube.com/");
-  mainWindow.webContents.openDevTools();
   Menu.setApplicationMenu(null);
 
   updateThumbarButtons(false);
