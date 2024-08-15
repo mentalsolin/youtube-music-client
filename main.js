@@ -1,6 +1,10 @@
 const { app, BrowserWindow, ipcMain, nativeImage, Menu } = require("electron");
 const path = require("path");
 
+app.setPath('userData', path.join(app.getPath('home'), 'AppData\\Local\\YouTubeMusicDesktopClient'));
+
+console.log('User Data Path:', app.getPath('userData'));
+
 let mainWindow;
 let isPlaying = false;
 let isLiked = true;
