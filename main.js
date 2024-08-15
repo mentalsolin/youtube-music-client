@@ -42,7 +42,7 @@ function updateThumbarButtons(isTrackSelected) {
     "icons",
     isLiked ? "like.png" : "like-fill.png"
   );
-  
+
   const radioIcon = nativeImage.createFromPath(radioIconPath);
   const playPauseIcon = nativeImage.createFromPath(playPauseIconPath);
   const prevIcon = nativeImage.createFromPath(prevIconPath);
@@ -87,6 +87,7 @@ function updateThumbarButtons(isTrackSelected) {
       click() {
         mainWindow.webContents.send("like-track");
       },
+      flags: isTrackSelected ? [] : ["disabled"],
     },
   ]);
 }
