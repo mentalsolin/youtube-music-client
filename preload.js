@@ -1,10 +1,13 @@
 const { ipcRenderer } = require("electron");
 
 window.addEventListener("DOMContentLoaded", () => {
-  let isPlaying = false;
-
   function checkTitle() {
     return document.title === "YouTube Music";
+  }
+
+  function checkLike() {
+    const likeButton = document.querySelector('.middle-controls-buttons .like');
+    return likeButton && likeButton.getAttribute("aria-pressed") == "true";
   }
 
   function checkTrackSelection() {
@@ -32,7 +35,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const observer = new MutationObserver(() => {
     const isYouTubeMusic = checkTitle();
-    console.log(isYouTubeMusic);
 
     ipcRenderer.send("update-thumbar-buttons", {
       isTrackSelected: !isYouTubeMusic,
@@ -43,6 +45,27 @@ window.addEventListener("DOMContentLoaded", () => {
   observer.observe(document.querySelector("title"), {
     childList: true,
     subtree: true,
+  });
+
+  const likeButton = document.querySelector('.middle-controls-buttons .like');
+
+  const observer2 = new MutationObserver(() => {
+    const isLiked = checkLike();
+    ipcRenderer.send("update-like-button", !isLiked);
+  });
+
+  observer2.observe(likeButton, {
+    attributes: true,
+    attributeFilter: ["aria-pressed"],
+  });
+
+  ipcRenderer.on("like-track", () => {
+    const likeButtonElement = document.querySelector('.middle-controls-buttons .like button');
+    if (likeButtonElement) {
+      const isLiked = checkLike();
+      likeButtonElement.click();
+      ipcRenderer.send("update-like-button", isLiked);
+    }
   });
 
   ipcRenderer.on("media-play-pause", togglePlayPause);
